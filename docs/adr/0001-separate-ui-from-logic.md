@@ -1,4 +1,5 @@
 # ADR 0001: Separate UI from Business Logic in Forms and Components
+As the project grew, mixing UI and business logic made the code harder to maintain and test. Separating them improves clarity and supports team collaboration, despite the initial extra effort to refactor.
 
 ## Decision
 Extract business logic from UI components into separate controller hooks.  

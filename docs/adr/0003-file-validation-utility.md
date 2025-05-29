@@ -1,4 +1,5 @@
 # ADR 0003: Introduce a Reusable File Validation Utility
+File checks were done in many different ways. This caused mistakes and extra work. A shared file check helps keep things the same and easier to change later.
 
 ## Decision
 Create a utility function `validateFile(file: File): ValidationResult` for use in all file uploads.  

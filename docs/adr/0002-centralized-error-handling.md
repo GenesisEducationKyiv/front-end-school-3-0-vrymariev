@@ -1,4 +1,5 @@
 # ADR 0002: Centralized Error Handling for API Calls and Forms
+Error handling was different in many places. This made it hard to fix and confusing for users. Now, errors will be handled in one place to make it easier and clearer.
 
 ## Decision
 Introduce a centralized error-handling utility (`handleApiError`) used by all controllers and form logic.  
