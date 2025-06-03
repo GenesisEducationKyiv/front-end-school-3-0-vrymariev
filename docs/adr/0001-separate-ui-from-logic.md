@@ -28,3 +28,12 @@ Proposed
 **Negative:**
 - More boilerplate due to splitting files
 - Developers must consistently apply this pattern
+
+## Concerns and Mitigations
+- Might be harder for newcomers → Add onboarding doc or short guide with examples.
+- Hooks still tied to React → Extract logic to testable pure functions (services, utilities).
+- More files → Follow clear naming conventions (useXYZController.ts, XYZView.tsx).
+
+## Note
+- This separation applies to domain-specific logic, such as preparing API payloads, validating form input, or transforming business data.
+- It does not apply to pure UI state, such as isOpen, selectedTab, or hoveredItem. These should remain in UI components or UI-level hooks.
