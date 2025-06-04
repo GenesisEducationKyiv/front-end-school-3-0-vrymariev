@@ -6,6 +6,7 @@ import { Input } from '@ui/Input';
 import { Button } from '@ui/Button';
 import { useGenres } from '@lib/hooks/fetchers/useFetchGenres';
 import { TrackFormValues, trackFormValueSchema } from '@models/zod/track.schema';
+import { tryCatchSync } from '@lib/neverthrowUtils';
 
 interface TrackFormProps {
 	defaultValues?: Partial<TrackFormValues>;
@@ -54,12 +55,11 @@ const TrackForm: React.FC<TrackFormProps> = ({ defaultValues, onSubmit }) => {
 		);
 	};
 
-	const isValidUrl = (url?: string) => {
-		try {
-			return Boolean(url && new URL(url));
-		} catch {
-			return false;
-		}
+	const isValidUrl = (url?: string): boolean => {
+		if (!url) return false;
+
+		const result = tryCatchSync(() => new URL(url));
+		return result.isOk();
 	};
 
 	const unselectedGenres = availableGenres.filter((g) => !genres.includes(g));
