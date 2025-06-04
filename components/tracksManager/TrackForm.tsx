@@ -2,25 +2,10 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { Input } from '@ui/Input';
 import { Button } from '@ui/Button';
 import { useGenres } from '@lib/hooks/fetchers/useFetchGenres';
-
-export const trackSchema = z.object({
-	title: z.string().min(1, 'Title is required'),
-	artist: z.string().min(1, 'Artist is required'),
-	album: z.string().optional(),
-	genres: z.array(z.string()).min(1, 'At least one genre is required'),
-	coverImage: z
-		.string()
-		.refine((val) => val === '' || /^https?:\/\/\S+\.\S+/.test(val), {
-			message: 'Must be a valid URL',
-		})
-		.optional(),
-});
-
-export type TrackFormValues = z.infer<typeof trackSchema>;
+import { TrackFormValues, trackFormValueSchema } from '@models/zod/track.schema';
 
 interface TrackFormProps {
 	defaultValues?: Partial<TrackFormValues>;
@@ -36,7 +21,7 @@ const TrackForm: React.FC<TrackFormProps> = ({ defaultValues, onSubmit }) => {
 		watch,
 		formState: { errors },
 	} = useForm<TrackFormValues>({
-		resolver: zodResolver(trackSchema),
+		resolver: zodResolver(trackFormValueSchema),
 		defaultValues: {
 			title: '',
 			artist: '',

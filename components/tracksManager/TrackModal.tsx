@@ -7,10 +7,11 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@ui/Dialog';
-import TrackForm, { TrackFormValues } from '@components/tracksManager/TrackForm';
+import TrackForm from '@components/tracksManager/TrackForm';
 import { createTrack, updateTrack } from '@api/resources/Tracks';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { TrackFormValues } from '@models/zod/track.schema';
 
 const TrackModal: React.FC = () => {
 	const { isOpen, modalState, closeModal } = useTrackModal();
