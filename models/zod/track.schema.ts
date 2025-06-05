@@ -32,9 +32,8 @@ export const tracksRequestQueryParamsSchema = z.object({
 	search: z.string().trim().optional(),
 	genre: z.string().trim().optional(),
 	artist: z.string().trim().optional(),
-	//   sort: z.enum(['title', 'createdAt', 'updatedAt']).optional(),
-	sort: z.string().trim().optional(),
-	order: z.enum(['asc', 'desc']).optional(),
+	sort: z.union([z.literal('title'), z.literal('artist'), z.literal('album'), z.literal('createdAt')]).optional(),
+	order: z.union([z.literal('asc'), z.literal('desc')]).optional(),
 });
 
 export const trackFormValueSchema = z.object({
@@ -49,7 +48,6 @@ export const trackFormValueSchema = z.object({
 		})
 		.optional(),
 });
-
 
 // Inferred Types
 export type TrackMeta = z.infer<typeof metaSchema>;
