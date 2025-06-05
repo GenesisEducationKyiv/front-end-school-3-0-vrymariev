@@ -5,7 +5,7 @@ import { AddTackFileButton } from "../AddTackFileButton";
 import { DeleteTrackFileButton } from "../DeleteTrackFileButton";
 import moment from "moment";
 import { DeleteTrackButton } from "../DeleteTrackButton";
-import { Track } from "@models/track/track";
+import { Track } from "@models/zod/track.schema";
 
 export function getTrackColumns(openModal: (track: Track) => void): ColumnDef<Track, any>[] {
 	const columnHelper = createColumnHelper<Track>();

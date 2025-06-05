@@ -7,7 +7,7 @@ import { useDebounce } from '@lib/hooks/useDebounce';
 import { useTrackModal } from '@context/TrackModalContext';
 import { useTracks } from '@lib/hooks/fetchers/useFetchTracks';
 import { getTrackColumns } from './Columns';
-import { TracksRequestQueryParams } from '@models/track/tracksRequestQueryParams';
+import { TracksRequestQueryParams } from '@models/zod/track.schema';
 
 export function TracksList() {
 	const [tableSorting, setTableSort] = useState<SortingState>([]);

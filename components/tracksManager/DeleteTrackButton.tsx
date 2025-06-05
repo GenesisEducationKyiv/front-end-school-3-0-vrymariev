@@ -6,6 +6,7 @@ import { Button } from '@ui/Button';
 import { useQueryClient } from '@tanstack/react-query';
 import { deleteTrack } from '@api/resources/Tracks';
 import { toast } from 'sonner';
+import { tryCatch } from '@lib/neverthrowUtils';
 
 type DeleteTrackButtonProps = {
 	id: string;
@@ -17,15 +18,21 @@ export const DeleteTrackButton: React.FC<DeleteTrackButtonProps> = ({ id, title 
 	const queryClient = useQueryClient();
 
 	const handleConfirm = async () => {
-		try {
-			await deleteTrack(id);
-			await queryClient.invalidateQueries({ queryKey: ['tracks'] });
-			toast.success('Success!');
-			setDialogOpen(false);
-		} catch (error) {
-			console.error('Error on DeleteTrackButton: ', error);
-			toast.error('Server error! Check console.');
+		const deleteResult = await tryCatch(() => deleteTrack(id));
+		if (deleteResult.isErr()) {
+			console.error('Error on DeleteTrackButton:', deleteResult.error);
+			toast.error('Failed to delete track');
+			return;
 		}
+
+		const invalidateResult = await tryCatch(() => queryClient.invalidateQueries({ queryKey: ['tracks'] }));
+		if (invalidateResult.isErr()) {
+			console.warn('Warning: failed to refresh track list:', invalidateResult.error);
+			toast.warning('Track deleted, but refresh failed');
+		}
+
+		toast.success('Success!');
+		setDialogOpen(false);
 	};
 
 	return (

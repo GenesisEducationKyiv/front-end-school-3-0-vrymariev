@@ -1,4 +1,4 @@
-import { Track } from '@models/track/track';
+import { Track } from '@models/zod/track.schema';
 import React, { createContext, useContext, useState } from 'react';
 
 type TrackModalContextType = {

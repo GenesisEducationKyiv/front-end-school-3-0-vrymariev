@@ -1,5 +1,5 @@
 'use client';
-import { Track } from '@models/track/track';
+import { Track } from '@models/zod/track.schema';
 import {
 	ColumnDef,
 	flexRender,

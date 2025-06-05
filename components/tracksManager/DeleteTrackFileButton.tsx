@@ -6,6 +6,7 @@ import { Button } from '@ui/Button';
 import { useQueryClient } from '@tanstack/react-query';
 import { deleteTrackFile } from '@api/resources/Tracks';
 import { toast } from 'sonner';
+import { tryCatch } from '@lib/neverthrowUtils';
 
 type DeleteTrackButtonProps = {
 	id: string;
@@ -17,15 +18,21 @@ export const DeleteTrackFileButton: React.FC<DeleteTrackButtonProps> = ({ id, fi
 	const queryClient = useQueryClient();
 
 	const handleConfirm = async () => {
-		try {
-			await deleteTrackFile(id);
-			await queryClient.invalidateQueries({ queryKey: ['tracks'] });
-			toast.success('Success!');
-			setDialogOpen(false);
-		} catch (error) {
-			console.error('Error on DeleteTrackFileButton: ', error);
-			toast.error('Server error! Check console.');
+		const deleteResult = await tryCatch(() => deleteTrackFile(id));
+		if (deleteResult.isErr()) {
+			console.error('Error on DeleteTrackFileButton:', deleteResult.error);
+			toast.error('Failed to delete track file');
+			return;
 		}
+
+		const invalidateResult = await tryCatch(() => queryClient.invalidateQueries({ queryKey: ['tracks'] }));
+		if (invalidateResult.isErr()) {
+			console.warn('Track file deleted, but cache invalidation failed:', invalidateResult.error);
+			toast.warning('File deleted, but list not updated');
+		}
+
+		toast.success('Success!');
+		setDialogOpen(false);
 	};
 
 	return (
