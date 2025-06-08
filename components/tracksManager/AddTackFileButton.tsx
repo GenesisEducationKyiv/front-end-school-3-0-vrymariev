@@ -20,7 +20,7 @@ export const AddTackFileButton: React.FC<DeleteTrackButtonProps> = ({ id }) => {
 	const queryClient = useQueryClient();
 
 	const handleConfirm = useCallback(async () => {
-		if (file === undefined) return;
+		if (!file) return;
 
 		const formData = new FormData();
 		formData.append('files', file);
