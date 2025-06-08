@@ -26,13 +26,15 @@ export const trackListResponseSchema = z.object({
 	meta: metaSchema,
 });
 
+export const tracksRequestSortingSchema = z.union([z.literal('title'), z.literal('artist')]);
+
 export const tracksRequestQueryParamsSchema = z.object({
 	page: z.coerce.number().int().positive().optional(),
 	limit: z.coerce.number().int().positive().optional(),
 	search: z.string().trim().optional(),
 	genre: z.string().trim().optional(),
 	artist: z.string().trim().optional(),
-	sort: z.union([z.literal('title'), z.literal('artist'), z.literal('album'), z.literal('createdAt')]).optional(),
+	sort: tracksRequestSortingSchema.optional(),
 	order: z.union([z.literal('asc'), z.literal('desc')]).optional(),
 });
 
@@ -55,3 +57,4 @@ export type Track = z.infer<typeof trackSchema>;
 export type TrackListResponse = z.infer<typeof trackListResponseSchema>;
 export type TracksRequestQueryParams = z.infer<typeof tracksRequestQueryParamsSchema>;
 export type TrackFormValues = z.infer<typeof trackFormValueSchema>;
+export type TracksRequestSorting = z.infer<typeof tracksRequestSortingSchema>;

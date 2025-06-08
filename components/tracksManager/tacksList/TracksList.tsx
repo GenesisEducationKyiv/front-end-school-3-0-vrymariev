@@ -7,7 +7,7 @@ import { useDebounce } from '@lib/hooks/useDebounce';
 import { useTrackModal } from '@context/TrackModalContext';
 import { useTracks } from '@lib/hooks/fetchers/useFetchTracks';
 import { getTrackColumns } from './Columns';
-import { TracksRequestQueryParams } from '@models/zod/track.schema';
+import { TracksRequestQueryParams, tracksRequestSortingSchema } from '@models/zod/track.schema';
 
 export function TracksList() {
 	const [tableSorting, setTableSort] = useState<SortingState>([]);
@@ -17,12 +17,13 @@ export function TracksList() {
 	const debouncedSearch = useDebounce(searchFilter, 300);
 	const [artistFilter, setArtistFilter] = useState<string | undefined>();
 	const [genreFilter, setGenreFilter] = useState<string | undefined>();
+	const parsedSortField = tracksRequestSortingSchema.safeParse(tableSorting[0]?.id);
 
 	const { openModal } = useTrackModal();
 
 	const filters = useMemo<TracksRequestQueryParams>(() => {
 		return {
-			sort: tableSorting[0]?.id,
+			sort: parsedSortField.success ? parsedSortField.data : undefined,
 			order: tableSorting[0]?.desc ? 'desc' : 'asc',
 			artist: artistFilter,
 			genre: genreFilter,
