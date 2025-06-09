@@ -8,6 +8,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { uploadTrackFile } from '@api/resources/Tracks';
 import Dropzone from 'react-dropzone';
 import { toast } from 'sonner';
+import { tryCatch } from '@lib/neverthrowUtils';
 
 type DeleteTrackButtonProps = {
 	id: string;
@@ -19,38 +20,35 @@ export const AddTackFileButton: React.FC<DeleteTrackButtonProps> = ({ id }) => {
 	const queryClient = useQueryClient();
 
 	const handleConfirm = useCallback(async () => {
-		if (file !== undefined) {
-			try {
-				const formData = new FormData();
-				formData.append('files', file);
-				await uploadTrackFile(id, formData);
-				await queryClient.invalidateQueries({ queryKey: ['tracks'] });
-				toast.success('Done!', { id });
-				setDialogOpen(false);
-			} catch (error) {
-				console.error('Error on AddTackFileButton: ', error);
-				toast.error('Server error! Check console.');
-			}
+		if (!file) return;
+
+		const formData = new FormData();
+		formData.append('files', file);
+
+		const result = await tryCatch(() => uploadTrackFile(id, formData));
+
+		if (result.isErr()) {
+			console.error('Error on AddTrackFileButton:', result.error);
+			toast.error('Server error! Check console.');
+			return;
 		}
+
+		await queryClient.invalidateQueries({ queryKey: ['tracks'] });
+		toast.success('Done!', { id });
+		setDialogOpen(false);
 	}, [id, file]);
 
 	const handleDrop = (acceptedFiles: File[]) => {
-		try {
-			const newFile = acceptedFiles[0];
+		const newFile = acceptedFiles[0];
 
-			// Check max height 10MB as on API
-			if (newFile.size > 10 * 1024 * 1024) {
-				throw Error('File is too big');
-			} else {
-				setFile(newFile);
-			}
-		} catch (error) {
-			console.error('File add error', error);
-			toast.error(`File add error. ${error}`);
+		if (newFile.size > 10 * 1024 * 1024) {
+			toast.error('File is too big');
+			return;
 		}
+
+		setFile(newFile);
 	};
 
-	
 	const handleDropError = (error: Error) => {
 		console.error('File add error', error);
 		toast.error(`File add error. ${error}`);
