@@ -10,20 +10,30 @@ import {
 	TracksRequestQueryParams,
 	trackFormValueSchema,
 } from '@models/zod/track.schema';
+import * as Belt from '@mobily/ts-belt';
+import { ApplicationError } from '@lib/errors/ApplicationError';
+import { BaseResourceErrorType } from '@models/errors/baseResourceError';
 
-export const fetchTracks = async (query?: TracksRequestQueryParams): Promise<TrackListResponse> => {
-	const validatedQuery = tracksRequestQueryParamsSchema.parse(query ?? {});
-	const queryString = qs.stringify(validatedQuery, { encode: true });
+export const fetchTracks = async (
+	query?: TracksRequestQueryParams,
+): Promise<Belt.Result<TrackListResponse, ApplicationError<BaseResourceErrorType>>> => {
+	try {
+		const validatedQuery = tracksRequestQueryParamsSchema.parse(query ?? {});
+		const queryString = qs.stringify(validatedQuery, { encode: true });
 
-	const response = await apiClient.get(`/api/tracks?${queryString}`);
+		const response = await apiClient.get(`/api/tracks?${queryString}`);
+		const result = trackListResponseSchema.safeParse(response.data);
 
-	const result = trackListResponseSchema.safeParse(response.data);
-	if (!result.success) {
-		console.error(result.error);
-		throw new Error('Invalid response from /api/tracks');
+		if (!result.success) {
+			return Belt.R.Error(
+				ApplicationError.wrap(new Error(BaseResourceErrorType.InvalidResponse), BaseResourceErrorType.InvalidResponse),
+			);
+		}
+
+		return Belt.R.Ok(result.data);
+	} catch (error) {
+		return Belt.R.Error(ApplicationError.wrap(error, BaseResourceErrorType.NetworkError));
 	}
-
-	return result.data;
 };
 
 export const updateTrack = async (id: string, trackData: TrackFormValues): Promise<Track> => {
