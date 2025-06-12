@@ -1,28 +1,31 @@
+'use client';
 import { fetchTracks } from '@api/resources/Tracks';
-import { TrackListResponse, TracksRequestQueryParams } from '@models/zod/track.schema';
+import { TrackListResponse, TracksRequestQueryParams } from '@models/zod/track.table.schema';
 import { useQuery } from '@tanstack/react-query';
-import * as Belt from '@mobily/ts-belt';
 import { BaseResourceErrorType } from '@models/errors/baseResourceError';
+import { ApplicationError } from '@lib/errors/ApplicationError';
+import { Result } from 'neverthrow';
 
 export const useTracks = (filters: TracksRequestQueryParams) =>
 	useQuery<TrackListResponse>({
 		queryKey: ['tracks', filters],
 		queryFn: async () => {
-			const result = await fetchTracks(filters);
-			Belt.R.tapError(result, (error) => {
+			const result: Result<TrackListResponse, ApplicationError<BaseResourceErrorType>> = await fetchTracks(filters);
+
+			if (result.isErr()) {
+				const error = result.error;
+
 				if (error.is(BaseResourceErrorType.InvalidResponse)) {
 					console.error('Invalid schema from server:', error);
-				}
-
-				if (error.is(BaseResourceErrorType.NetworkError)) {
+				} else if (error.is(BaseResourceErrorType.NetworkError)) {
 					console.error('Network issue while fetching tracks:', error);
+				} else {
+					console.error('Unknown error while fetching tracks:', error);
 				}
-
-				console.error('Unknown error while fetching tracks:', error);
 
 				throw error;
-			});
+			}
 
-			return Belt.R.getExn(result);
+			return result.value;
 		},
 	});

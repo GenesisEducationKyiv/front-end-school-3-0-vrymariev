@@ -3,10 +3,9 @@ import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@ui/Dialog';
 import { Button } from '@ui/Button';
-import { useQueryClient } from '@tanstack/react-query';
-import { deleteTrack } from '@api/resources/Tracks';
 import { toast } from 'sonner';
 import { tryCatch } from '@lib/neverthrowUtils';
+import { useDeleteTrack } from '@lib/hooks/mutations/useDeleteTrack';
 
 type DeleteTrackButtonProps = {
 	id: string;
@@ -15,24 +14,18 @@ type DeleteTrackButtonProps = {
 
 export const DeleteTrackButton: React.FC<DeleteTrackButtonProps> = ({ id, title }) => {
 	const [isDialogOpen, setDialogOpen] = useState(false);
-	const queryClient = useQueryClient();
+	const { mutateAsync } = useDeleteTrack({
+		onSuccess: () => {
+			toast.success('Success!');
+			setDialogOpen(false);
+		},
+	});
 
 	const handleConfirm = async () => {
-		const deleteResult = await tryCatch(() => deleteTrack(id));
+		const deleteResult = await tryCatch(() => mutateAsync(id));
 		if (deleteResult.isErr()) {
-			console.error('Error on DeleteTrackButton:', deleteResult.error);
 			toast.error('Failed to delete track');
-			return;
 		}
-
-		const invalidateResult = await tryCatch(() => queryClient.invalidateQueries({ queryKey: ['tracks'] }));
-		if (invalidateResult.isErr()) {
-			console.warn('Warning: failed to refresh track list:', invalidateResult.error);
-			toast.warning('Track deleted, but refresh failed');
-		}
-
-		toast.success('Success!');
-		setDialogOpen(false);
 	};
 
 	return (

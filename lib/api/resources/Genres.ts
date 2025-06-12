@@ -1,22 +1,20 @@
 import apiClient from '@api/apiClient';
-import { GenresResponse, genresResponseSchema } from '@models/zod/genre.schema';
-import * as Belt from '@mobily/ts-belt';
+import { genresResponseSchema } from '@models/zod/genre.schema';
 import { ApplicationError } from '@lib/errors/ApplicationError';
 import { BaseResourceErrorType } from '@models/errors/baseResourceError';
+import { err, ok } from 'neverthrow';
 
-export const fetchGenres = async (): Promise<
-	Belt.Result<GenresResponse, ApplicationError<BaseResourceErrorType>>
-> => {
+export const fetchGenres = async () => {
 	try {
 		const response = await apiClient.get('/api/genres');
 		const result = genresResponseSchema.safeParse(response.data);
 
 		if (!result.success) {
-			return Belt.R.Error(ApplicationError.wrap(new Error('Invalid response'), BaseResourceErrorType.InvalidResponse));
+			return err(ApplicationError.wrap(new Error('Invalid response'), BaseResourceErrorType.InvalidResponse));
 		}
 
-		return Belt.R.Ok(result.data);
+		return ok(result.data);
 	} catch (error) {
-		return Belt.R.Error(ApplicationError.wrap(error, BaseResourceErrorType.NetworkError));
+		return err(ApplicationError.wrap(error, BaseResourceErrorType.NetworkError));
 	}
 };

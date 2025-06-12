@@ -3,10 +3,9 @@ import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@ui/Dialog';
 import { Button } from '@ui/Button';
-import { useQueryClient } from '@tanstack/react-query';
-import { deleteTrackFile } from '@api/resources/Tracks';
 import { toast } from 'sonner';
 import { tryCatch } from '@lib/neverthrowUtils';
+import { useDeleteTrackFile } from '@lib/hooks/mutations/useDeleteTrackFile';
 
 type DeleteTrackButtonProps = {
 	id: string;
@@ -15,24 +14,19 @@ type DeleteTrackButtonProps = {
 
 export const DeleteTrackFileButton: React.FC<DeleteTrackButtonProps> = ({ id, fileName }) => {
 	const [isDialogOpen, setDialogOpen] = useState(false);
-	const queryClient = useQueryClient();
+	const { mutateAsync } = useDeleteTrackFile({
+		id,
+		onSuccess: () => {
+			toast.success('Success!');
+			setDialogOpen(false);
+		},
+	});
 
 	const handleConfirm = async () => {
-		const deleteResult = await tryCatch(() => deleteTrackFile(id));
+		const deleteResult = await tryCatch(() => mutateAsync());
 		if (deleteResult.isErr()) {
-			console.error('Error on DeleteTrackFileButton:', deleteResult.error);
-			toast.error('Failed to delete track file');
-			return;
+			toast.error('Failed to delete track');
 		}
-
-		const invalidateResult = await tryCatch(() => queryClient.invalidateQueries({ queryKey: ['tracks'] }));
-		if (invalidateResult.isErr()) {
-			console.warn('Track file deleted, but cache invalidation failed:', invalidateResult.error);
-			toast.warning('File deleted, but list not updated');
-		}
-
-		toast.success('Success!');
-		setDialogOpen(false);
 	};
 
 	return (

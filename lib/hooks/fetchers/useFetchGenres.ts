@@ -1,34 +1,31 @@
+'use client';
 import { fetchGenres } from '@api/resources/Genres';
 import { useQuery } from '@tanstack/react-query';
-import * as Belt from '@mobily/ts-belt';
-import { BaseResourceErrorType } from '@models/errors/baseResourceError';
 import { GenresResponse } from '@models/zod/genre.schema';
+import { BaseResourceErrorType } from '@models/errors/baseResourceError';
+import { ApplicationError } from '@lib/errors/ApplicationError';
+import { Result } from 'neverthrow';
 
 export const useGenres = () =>
 	useQuery<GenresResponse>({
 		queryKey: ['genres'],
 		queryFn: async () => {
-			const result = await fetchGenres();
+			const result: Result<string[], ApplicationError<BaseResourceErrorType>> = await fetchGenres();
 
-			if (Belt.R.isOk(result)) {
-				return Belt.R.getExn(result);
-			}
+			if (result.isErr()) {
+				const error = result.error;
 
-			Belt.R.tapError(result, (error) => {
 				if (error.is(BaseResourceErrorType.InvalidResponse)) {
 					console.error('Invalid schema from server:', error);
-					return;
-				}
-
-				if (error.is(BaseResourceErrorType.NetworkError)) {
+				} else if (error.is(BaseResourceErrorType.NetworkError)) {
 					console.error('Network issue while fetching genres:', error);
-					return;
+				} else {
+					console.error('Unknown error while fetching genres:', error);
 				}
 
-				console.error('Unknown error while fetching tracks:', error);
 				throw error;
-			});
+			}
 
-			return Belt.R.getExn(result);
+			return result.value;
 		},
 	});
