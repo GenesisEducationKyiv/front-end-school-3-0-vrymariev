@@ -2,7 +2,7 @@
 import { createTrack, updateTrack } from '@api/resources/Tracks';
 import { TrackFormValues } from '@models/zod/track.table.schema';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { BaseResourceErrorType } from '@models/errors/baseResourceError';
+import { BaseResourceError, BaseResourceErrorType } from '@models/errors/baseResourceError';
 import { Track } from '@models/zod/track.schema';
 import { ApplicationError } from '@lib/errors/ApplicationError';
 import { Result } from 'neverthrow';
@@ -25,9 +25,9 @@ export function useTrackMutation({ id, onSuccess }: UseTrackMutationParams) {
 			if (result.isErr()) {
 				const error = result.error;
 
-				if (error.is(BaseResourceErrorType.InvalidResponse)) {
+				if (error.is(BaseResourceError.InvalidResponse)) {
 					console.error('Invalid schema from server:', error);
-				} else if (error.is(BaseResourceErrorType.NetworkError)) {
+				} else if (error.is(BaseResourceError.NetworkError)) {
 					console.error('Network issue while saving track:', error);
 				} else {
 					console.error('Unknown error while saving track:', error);

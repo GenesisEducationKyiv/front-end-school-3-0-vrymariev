@@ -10,7 +10,7 @@ import {
 	trackFormValueSchema,
 } from '@models/zod/track.table.schema';
 import { ApplicationError } from '@lib/errors/ApplicationError';
-import { BaseResourceErrorType } from '@models/errors/baseResourceError';
+import { BaseResourceError, BaseResourceErrorType } from '@models/errors/baseResourceError';
 import { err, ok } from 'neverthrow';
 
 export const fetchTracks = async (query?: TracksRequestQueryParams) => {
@@ -23,13 +23,13 @@ export const fetchTracks = async (query?: TracksRequestQueryParams) => {
 		const result = trackListResponseSchema.safeParse(response.data);
 		if (!result.success) {
 			return err(
-				ApplicationError.wrap(new Error(BaseResourceErrorType.InvalidResponse), BaseResourceErrorType.InvalidResponse),
+				ApplicationError.wrap(new Error(BaseResourceError.InvalidResponse), BaseResourceError.InvalidResponse),
 			);
 		}
 
 		return ok(result.data);
 	} catch (error) {
-		return err(ApplicationError.wrap(error, BaseResourceErrorType.NetworkError));
+		return err(ApplicationError.wrap(error, BaseResourceError.NetworkError));
 	}
 };
 
@@ -42,12 +42,12 @@ export const updateTrack = async (id: string, trackData: TrackFormValues) => {
 		const result = trackSchema.safeParse(response.data);
 		if (!result.success) {
 			console.error(result.error);
-			return err(ApplicationError.wrap(new Error('Invalid updated track'), BaseResourceErrorType.InvalidResponse));
+			return err(ApplicationError.wrap(new Error('Invalid updated track'), BaseResourceError.InvalidResponse));
 		}
 
 		return ok(result.data);
 	} catch (error) {
-		return err(ApplicationError.wrap(error, BaseResourceErrorType.NetworkError));
+		return err(ApplicationError.wrap(error, BaseResourceError.NetworkError));
 	}
 };
 
@@ -59,13 +59,13 @@ export const createTrack = async (trackData: TrackFormValues) => {
 		const result = trackSchema.safeParse(response.data);
 		if (!result.success) {
 			return err(
-				ApplicationError.wrap(new Error(BaseResourceErrorType.InvalidResponse), BaseResourceErrorType.InvalidResponse),
+				ApplicationError.wrap(new Error(BaseResourceError.InvalidResponse), BaseResourceError.InvalidResponse),
 			);
 		}
 
 		return ok(result.data);
 	} catch (error) {
-		return err(ApplicationError.wrap(error, BaseResourceErrorType.NetworkError));
+		return err(ApplicationError.wrap(error, BaseResourceError.NetworkError));
 	}
 };
 
@@ -74,7 +74,7 @@ export const deleteTrack = async (id: string) => {
 		await apiClient.delete(`/api/tracks/${id}`);
 		return ok(undefined);
 	} catch (error) {
-		return err(ApplicationError.wrap(error, BaseResourceErrorType.NetworkError));
+		return err(ApplicationError.wrap(error, BaseResourceError.NetworkError));
 	}
 };
 
@@ -83,7 +83,7 @@ export const deleteTrackFile = async (id: string) => {
 		await apiClient.delete(`/api/tracks/${id}/file`);
 		return ok(undefined);
 	} catch (error) {
-		return err(ApplicationError.wrap(error, BaseResourceErrorType.NetworkError));
+		return err(ApplicationError.wrap(error, BaseResourceError.NetworkError));
 	}
 };
 
@@ -96,6 +96,6 @@ export const uploadTrackFile = async (id: string, file: FormData) => {
 		});
 		return ok(undefined);
 	} catch (error) {
-		return err(ApplicationError.wrap(error, BaseResourceErrorType.NetworkError));
+		return err(ApplicationError.wrap(error, BaseResourceError.NetworkError));
 	}
 };
