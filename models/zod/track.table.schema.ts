@@ -7,7 +7,12 @@ export const trackListResponseSchema = z.object({
 	meta: metaSchema,
 });
 
-export const tracksTableSortingSchema = z.union([z.literal('title'), z.literal('artist')]);
+export const tracksTableSortingSchema = z.union([
+	z.literal('title'),
+	z.literal('artist'),
+	z.literal('album'),
+	z.literal('createdAt'),
+]);
 export const tracksTableOrderSchema = z.union([z.literal('asc'), z.literal('desc')]);
 export const tracksTablePageSchema = z.coerce.number().int().positive();
 export const tracksTableMetaSchema = z.object({
