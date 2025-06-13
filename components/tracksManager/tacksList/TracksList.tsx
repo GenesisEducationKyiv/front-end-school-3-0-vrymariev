@@ -1,53 +1,18 @@
 'use client';
 import { DataTable } from './DataTable';
-import { PaginationState, SortingState } from '@tanstack/react-table';
-import { useMemo, useState } from 'react';
 import { Filters } from './Filters';
-import { useDebounce } from '@lib/hooks/useDebounce';
-import { useTrackModal } from '@context/TrackModalContext';
-import { useTracks } from '@lib/hooks/fetchers/useFetchTracks';
-import { getTrackColumns } from './Columns';
-import { TracksRequestQueryParams, tracksRequestSortingSchema } from '@models/zod/track.schema';
+import { Track } from '@models/zod/track.schema';
+import { TracksTableSorting } from '@models/zod/track.table.schema';
+import { useTracksListController } from '@lib/hooks/components/trackList/useTracksListController';
 
 export function TracksList() {
-	const [tableSorting, setTableSort] = useState<SortingState>([]);
-	const [tablePagination, setTablePagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 10 });
-
-	const [searchFilter, setSearchFilter] = useState<string>('');
-	const debouncedSearch = useDebounce(searchFilter, 300);
-	const [artistFilter, setArtistFilter] = useState<string | undefined>();
-	const [genreFilter, setGenreFilter] = useState<string | undefined>();
-	const parsedSortField = tracksRequestSortingSchema.safeParse(tableSorting[0]?.id);
-
-	const { openModal } = useTrackModal();
-
-	const filters = useMemo<TracksRequestQueryParams>(() => {
-		return {
-			sort: parsedSortField.success ? parsedSortField.data : undefined,
-			order: tableSorting[0]?.desc ? 'desc' : 'asc',
-			artist: artistFilter,
-			genre: genreFilter,
-			search: debouncedSearch,
-			page: tablePagination.pageIndex + 1,
-			limit: tablePagination.pageSize,
-		};
-	}, [tableSorting, debouncedSearch, artistFilter, genreFilter, tablePagination]);
-
-	const { data, isLoading, error } = useTracks(filters);
+	const { data, isLoading, error, trackTableColumns, tableSorting, tablePagination, onSortingChanged, onPageChange } =
+		useTracksListController();
 	const hasData = data && data.data.length > 0;
-
-	const columns = useMemo(() => getTrackColumns(openModal), [openModal]);
 
 	return (
 		<div className="flex flex-row gap-10">
-			<Filters
-				search={searchFilter}
-				onSearchChanged={setSearchFilter}
-				artistFilter={artistFilter}
-				onArtistFilterChanged={setArtistFilter}
-				genreFilter={genreFilter}
-				onGenreFilterChanged={setGenreFilter}
-			/>
+			<Filters />
 
 			{isLoading && !hasData && (
 				<div className="text-gray-500" data-testid="loading-tracks">
@@ -56,13 +21,13 @@ export function TracksList() {
 			)}
 
 			{!isLoading && hasData && (
-				<DataTable
-					columns={columns}
+				<DataTable<Track, unknown, TracksTableSorting>
+					columns={trackTableColumns}
 					data={data.data}
 					sorting={tableSorting}
-					onSortingChanged={setTableSort}
+					onSortingChanged={onSortingChanged}
 					pagination={tablePagination}
-					onPaginationChange={setTablePagination}
+					onPaginationChange={onPageChange}
 					pageCount={data.meta.totalPages}
 					rowCount={data.meta.total}
 				/>

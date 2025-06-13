@@ -4,11 +4,10 @@ import { X } from 'lucide-react';
 import { FilePlus } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@ui/Dialog';
 import { Button } from '@ui/Button';
-import { useQueryClient } from '@tanstack/react-query';
-import { uploadTrackFile } from '@api/resources/Tracks';
 import Dropzone from 'react-dropzone';
 import { toast } from 'sonner';
 import { tryCatch } from '@lib/neverthrowUtils';
+import { useUploadTrackFile } from '@lib/hooks/mutations/useUploadTrackFile';
 
 type DeleteTrackButtonProps = {
 	id: string;
@@ -17,7 +16,14 @@ type DeleteTrackButtonProps = {
 export const AddTackFileButton: React.FC<DeleteTrackButtonProps> = ({ id }) => {
 	const [isDialogOpen, setDialogOpen] = useState(false);
 	const [file, setFile] = useState<File>();
-	const queryClient = useQueryClient();
+
+	const { mutateAsync } = useUploadTrackFile({
+		id,
+		onSuccess: () => {
+			toast.success('Done!', { id });
+			setDialogOpen(false);
+		},
+	});
 
 	const handleConfirm = useCallback(async () => {
 		if (!file) return;
@@ -25,17 +31,10 @@ export const AddTackFileButton: React.FC<DeleteTrackButtonProps> = ({ id }) => {
 		const formData = new FormData();
 		formData.append('files', file);
 
-		const result = await tryCatch(() => uploadTrackFile(id, formData));
-
+		const result = await tryCatch(() => mutateAsync(formData));
 		if (result.isErr()) {
-			console.error('Error on AddTrackFileButton:', result.error);
 			toast.error('Server error! Check console.');
-			return;
 		}
-
-		await queryClient.invalidateQueries({ queryKey: ['tracks'] });
-		toast.success('Done!', { id });
-		setDialogOpen(false);
 	}, [id, file]);
 
 	const handleDrop = (acceptedFiles: File[]) => {
