@@ -1,28 +1,23 @@
 'use client';
 import { Track } from '@models/zod/track.schema';
-import {
-	ColumnDef,
-	flexRender,
-	getCoreRowModel,
-	PaginationState,
-	SortingState,
-	useReactTable,
-} from '@tanstack/react-table';
+import { ColumnDef, flexRender, getCoreRowModel, PaginationState, useReactTable } from '@tanstack/react-table';
 import { Button } from '@ui/Button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@ui/Table';
 
-interface DataTableProps<TData, TValue> {
+export type DataTableSorting<TSortKey> = { id: TSortKey; desc: boolean }[];
+
+interface DataTableProps<TData, TValue, TSortKey extends Extract<keyof TData, string>> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
-	sorting?: SortingState;
-	onSortingChanged?: (sorting: SortingState) => void;
+	sorting?: DataTableSorting<TSortKey>;
+	onSortingChanged?: (sorting: DataTableSorting<TSortKey>) => void;
 	pagination: PaginationState;
 	onPaginationChange?: (pagination: PaginationState) => void;
 	pageCount?: number;
 	rowCount?: number;
 }
 
-export function DataTable<TData extends Track, TValue>({
+export function DataTable<TData extends Track, TValue, TSortKey extends Extract<keyof TData, string>>({
 	columns,
 	data,
 	sorting,
@@ -31,14 +26,14 @@ export function DataTable<TData extends Track, TValue>({
 	onPaginationChange,
 	pageCount,
 	rowCount,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<TData, TValue, TSortKey>) {
 	const table = useReactTable({
 		data,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
 		onSortingChange: (updater) => {
 			const nextSorting = typeof updater === 'function' ? updater(sorting ?? []) : updater;
-			onSortingChanged?.(nextSorting);
+			onSortingChanged?.(nextSorting as { id: TSortKey; desc: boolean }[]);
 		},
 		state: {
 			sorting,
@@ -68,17 +63,20 @@ export function DataTable<TData extends Track, TValue>({
 					</TableHeader>
 					<TableBody>
 						{table.getRowModel().rows?.length ? (
-							table.getRowModel().rows.map((row) => 
-								{
-									const customId = row.original?.id;
-									return <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'} data-testid={`track-row-${customId}`}>
-									{row.getVisibleCells().map((cell) => (
-										<TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
-									))}
-								</TableRow>
-								}
-								
-							)
+							table.getRowModel().rows.map((row) => {
+								const customId = row.original?.id;
+								return (
+									<TableRow
+										key={row.id}
+										data-state={row.getIsSelected() && 'selected'}
+										data-testid={`track-row-${customId}`}
+									>
+										{row.getVisibleCells().map((cell) => (
+											<TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+										))}
+									</TableRow>
+								);
+							})
 						) : (
 							<TableRow>
 								<TableCell colSpan={columns.length} className="h-24 text-center">
