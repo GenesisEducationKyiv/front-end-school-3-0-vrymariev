@@ -3,6 +3,32 @@
 **Scope**: This report documents the audit of all frontend dependencies. The goal is to identify potential risks related to security and maintainability.
 All 34 libraries were reviewed based on key categories. The ones that may raise concerns are listed separately.
 
+## Audit Methodology
+
+We use a multi-step approach to check each npm package for security, stability, and ecosystem health:
+
+- **Vulnerability Check**
+  - Reviewed packages in:
+    - [Snyk](https://security.snyk.io/)
+    - [GitHub Advisories](https://github.com/advisories)
+    - [NVD](https://nvd.nist.gov/)
+
+- **GitHub Repository Review**
+  - Looked at:
+    - Open issues & PRs  
+    - Update frequency  
+    - Author and maintainer activity  
+
+- **Usage & Popularity**
+  - Checked trends and downloads on [npmtrends.com](https://npmtrends.com/)  
+  - Compared with alternative libraries  
+
+- **TypeScript Support**
+  - Verified built-in types or `@types` packages  
+  - Ensured good compatibility with modern TypeScript
+
+---
+
 ## 1. Zero-Day / Active CVE Risks
 
 - **axios**  
@@ -11,7 +37,7 @@ All 34 libraries were reviewed based on key categories. The ones that may raise 
   **Conclusion:** ✅ *The result is satisfactory.*
 
 - **moment**  
-  Had several known issues in the past, like CVE‑2022‑24785 (path traversal) and ReDoS problems.  
+  Had several known issues in the past, like CVE‑2022‑24785 (path traversal) and ReDoS problems CVE-2022-31129.  
   We use version `2.30.1`, which is safe. But the package is deprecated and won’t get updates.  
   **Conclusion:** ❌ *Action should be taken if possible.*
 
@@ -98,7 +124,8 @@ All 34 libraries were reviewed based on key categories. The ones that may raise 
 ---
 
 ## Conclusion:
-The first priority is to find and use an alternative to the **moment** package.
-It should be replaced because it is deprecated, does not support TypeScript, has outdated dependencies, is not tree-shakable, and had security issues in the past.
+The first priority is to find and use an alternative to the **moment**❌ package.  
+It should be replaced because it is deprecated, does not support TypeScript, has outdated dependencies, is not tree-shakable, and had security issues in the past.  
+Maybe [Day.js](https://www.npmjs.com/package/dayjs) will be the best option to replace.
 
 It’s also important to keep an eye on **tw-animate-css**, **query-string**, and **sonner**.
