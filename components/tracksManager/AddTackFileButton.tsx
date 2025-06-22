@@ -6,8 +6,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Button } from '@ui/Button';
 import Dropzone from 'react-dropzone';
 import { toast } from 'sonner';
-import { tryCatch } from '@lib/neverthrowUtils';
+import { tryCatch } from '@lib/utils/neverthrowUtils';
 import { useUploadTrackFile } from '@lib/hooks/mutations/useUploadTrackFile';
+import { validateFile } from '@lib/utils/fileUtills';
+
 
 type DeleteTrackButtonProps = {
 	id: string;
@@ -38,14 +40,14 @@ export const AddTackFileButton: React.FC<DeleteTrackButtonProps> = ({ id }) => {
 	}, [id, file]);
 
 	const handleDrop = (acceptedFiles: File[]) => {
-		const newFile = acceptedFiles[0];
+		const result = validateFile(acceptedFiles);
 
-		if (newFile.size > 10 * 1024 * 1024) {
-			toast.error('File is too big');
+		if (result.isErr()) {
+			toast.error(result.error.message);
 			return;
 		}
 
-		setFile(newFile);
+		setFile(result.value);
 	};
 
 	const handleDropError = (error: Error) => {

@@ -4,7 +4,7 @@ import { Trash2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@ui/Dialog';
 import { Button } from '@ui/Button';
 import { toast } from 'sonner';
-import { tryCatch } from '@lib/neverthrowUtils';
+import { tryCatch } from '@lib/utils/neverthrowUtils';
 import { useDeleteTrackFile } from '@lib/hooks/mutations/useDeleteTrackFile';
 
 type DeleteTrackButtonProps = {

@@ -1,5 +1,5 @@
 import { uploadTrackFile } from '@api/resources/Tracks';
-import { tryCatch } from '@lib/neverthrowUtils';
+import { tryCatch } from '@lib/utils/neverthrowUtils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 
