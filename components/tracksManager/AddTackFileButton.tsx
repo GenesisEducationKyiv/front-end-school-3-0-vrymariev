@@ -10,7 +10,6 @@ import { tryCatch } from '@lib/utils/neverthrowUtils';
 import { useUploadTrackFile } from '@lib/hooks/mutations/useUploadTrackFile';
 import { validateFile } from '@lib/utils/fileUtills';
 
-
 type DeleteTrackButtonProps = {
 	id: string;
 };
@@ -102,6 +101,7 @@ export const AddTackFileButton: React.FC<DeleteTrackButtonProps> = ({ id }) => {
 								<div
 									{...getRootProps()}
 									className="border-dashed border-2 border-gray-300 p-6 rounded-lg text-center cursor-pointer"
+									data-testid="dropzone-add-file"
 								>
 									<input {...getInputProps()} />
 									<p className="text-sm text-gray-500">Drag & drop files here, or click to select</p>
@@ -119,6 +119,7 @@ export const AddTackFileButton: React.FC<DeleteTrackButtonProps> = ({ id }) => {
 							variant="destructive"
 							onClick={handleConfirm}
 							disabled={file === undefined}
+							data-testid="confirm-add-file"
 						>
 							Add
 						</Button>

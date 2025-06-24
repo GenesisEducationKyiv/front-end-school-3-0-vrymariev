@@ -7,9 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test:e2e": "playwright test"
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:ui": "vitest --ui",
+    "test:e2e": "playwright test",
+    "test:ct": "playwright test --config=playwright-ct.config.ts"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.8.0",
     "@hookform/resolvers": "^5.0.1",
     "@mobily/ts-belt": "^3.13.1",
     "@playwright/test": "^1.53.1",

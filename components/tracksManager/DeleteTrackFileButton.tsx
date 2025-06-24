@@ -37,6 +37,7 @@ export const DeleteTrackFileButton: React.FC<DeleteTrackButtonProps> = ({ id, fi
 				size="icon"
 				onClick={() => setDialogOpen(true)}
 				title="Delete track file"
+				data-testid={`delete-file-${id}`}
 			>
 				<Trash2 className="w-4 h-4 cursor-pointer" />
 			</Button>
@@ -53,7 +54,7 @@ export const DeleteTrackFileButton: React.FC<DeleteTrackButtonProps> = ({ id, fi
 						<Button className="cursor-pointer" variant="outline" onClick={() => setDialogOpen(false)}>
 							Cancel
 						</Button>
-						<Button className="cursor-pointer" variant="destructive" onClick={handleConfirm}>
+						<Button className="cursor-pointer" variant="destructive" onClick={handleConfirm} data-testid="confirm-delete-file">
 							Delete
 						</Button>
 					</DialogFooter>
