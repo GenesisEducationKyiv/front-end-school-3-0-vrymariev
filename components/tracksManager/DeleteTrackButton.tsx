@@ -4,7 +4,7 @@ import { Trash2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@ui/Dialog';
 import { Button } from '@ui/Button';
 import { toast } from 'sonner';
-import { tryCatch } from '@lib/neverthrowUtils';
+import { tryCatch } from '@lib/utils/neverthrowUtils';
 import { useDeleteTrack } from '@lib/hooks/mutations/useDeleteTrack';
 
 type DeleteTrackButtonProps = {
@@ -30,7 +30,13 @@ export const DeleteTrackButton: React.FC<DeleteTrackButtonProps> = ({ id, title 
 
 	return (
 		<>
-			<Button className="cursor-pointer" variant="destructive" size="icon" onClick={() => setDialogOpen(true)}>
+			<Button
+				className="cursor-pointer"
+				variant="destructive"
+				size="icon"
+				data-testid={`delete-track-${id}`}
+				onClick={() => setDialogOpen(true)}
+			>
 				<Trash2 className="w-4 h-4 cursor-pointer" />
 			</Button>
 

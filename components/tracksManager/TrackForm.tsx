@@ -6,7 +6,7 @@ import { Input } from '@ui/Input';
 import { Button } from '@ui/Button';
 import { useGenres } from '@lib/hooks/fetchers/useFetchGenres';
 import { TrackFormValues, trackFormValueSchema } from '@models/zod/track.table.schema';
-import { tryCatchSync } from '@lib/neverthrowUtils';
+import { tryCatchSync } from '@lib/utils/neverthrowUtils';
 
 interface TrackFormProps {
 	defaultValues?: Partial<TrackFormValues>;

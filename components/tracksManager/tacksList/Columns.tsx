@@ -158,7 +158,7 @@ export function getTrackColumns(openModal: (track: Track) => void): ColumnDef<Tr
 						<Button className="cursor-pointer" onClick={() => openModal(track)} data-testid={`edit-track-${id}`}>
 							Edit
 						</Button>
-						<DeleteTrackButton id={track.id} title={track.title} data-testid={`delete-track-${id}`} />
+						<DeleteTrackButton id={track.id} title={track.title} />
 					</div>
 				);
 			},

@@ -7,7 +7,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { TrackFormValues } from '@models/zod/track.table.schema';
 import { useTrackMutation } from '@lib/hooks/mutations/useTrackMutation';
-import { tryCatch } from '@lib/neverthrowUtils';
+import { tryCatch } from '@lib/utils/neverthrowUtils';
 
 const TrackModal: React.FC = () => {
 	const { isOpen, modalState, closeModal } = useTrackModal();
