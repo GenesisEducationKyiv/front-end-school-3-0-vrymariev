@@ -1,9 +1,14 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ES2022"
+    ],
     "module": "ESNext",
     "moduleResolution": "bundler",
+    // "jsx": "preserve",
     "jsx": "preserve",
     "allowJs": false,
     "noEmit": true,
@@ -21,14 +26,33 @@
     ],
     "paths": {
       // "@/*": ["./*"],
-      "@api/*": ["./lib/api/*"],
-      "@lib/*": ["./lib/*"],
-      "@ui/*": ["./components/ui/*"],
-      "@components/*": ["./components/*"],
-      "@context/*": ["./context/*"],
-      "@models/*": ["./models/*"],
+      "@api/*": [
+        "./lib/api/*"
+      ],
+      "@lib/*": [
+        "./lib/*"
+      ],
+      "@ui/*": [
+        "./components/ui/*"
+      ],
+      "@components/*": [
+        "./components/*"
+      ],
+      "@context/*": [
+        "./context/*"
+      ],
+      "@models/*": [
+        "./models/*"
+      ]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
