@@ -8,8 +8,7 @@
     ],
     "module": "ESNext",
     "moduleResolution": "bundler",
-    // "jsx": "preserve",
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "allowJs": false,
     "noEmit": true,
     "strict": true,
@@ -25,7 +24,6 @@
       }
     ],
     "paths": {
-      // "@/*": ["./*"],
       "@api/*": [
         "./lib/api/*"
       ],
@@ -43,6 +41,9 @@
       ],
       "@models/*": [
         "./models/*"
+      ],
+      "@store/*": [
+        "./store/*"
       ]
     }
   },
