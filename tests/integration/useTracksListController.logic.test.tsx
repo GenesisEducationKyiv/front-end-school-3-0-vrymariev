@@ -12,7 +12,6 @@ vi.mock('@components/tracksManager/tacksList/Columns', () => ({
 
 import { useTracks } from '@lib/hooks/fetchers/useFetchTracks';
 import { useQueryTableFilters } from '@lib/hooks/components/trackList/useQueryTableFilters';
-import { useTrackModal } from '@context/TrackModalContext';
 import { getTrackColumns } from '@components/tracksManager/tacksList/Columns';
 import type { PaginationState } from '@tanstack/react-table';
 
@@ -45,10 +44,6 @@ describe('useTracksListController', () => {
 			},
 			setSortingQuery: mockSetSortingQuery,
 			setPageQuery: mockSetPageQuery,
-		});
-
-		(useTrackModal as Mock).mockReturnValue({
-			openModal: mockOpenModal,
 		});
 
 		(getTrackColumns as Mock).mockReturnValue(fakeColumns);
