@@ -1,17 +1,16 @@
 'use client';
-import { useTrackModal } from '@context/TrackModalContext';
 import { Button } from '@ui/Button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@ui/Dialog';
 import TrackForm from '@components/tracksManager/TrackForm';
-import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { TrackFormValues } from '@models/zod/track.table.schema';
 import { useTrackMutation } from '@lib/hooks/mutations/useTrackMutation';
 import { tryCatch } from '@lib/utils/neverthrowUtils';
+import { useTrackModalStore } from '@store/trackModalStore';
 
 const TrackModal: React.FC = () => {
-	const { isOpen, modalState, closeModal } = useTrackModal();
-	const queryClient = useQueryClient();
+	const { isOpen, modalState, closeModal } = useTrackModalStore();
+	
 	const { mutateAsync } = useTrackMutation({
 		id: modalState?.id,
 		onSuccess: () => {
