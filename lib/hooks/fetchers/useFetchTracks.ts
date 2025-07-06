@@ -1,16 +1,19 @@
 'use client';
-import { fetchTracks } from '@api/resources/Tracks';
-import { TrackListResponse, TracksRequestQueryParams } from '@models/zod/track.table.schema';
+import { fetchTracks } from '@api/resources/trackRest';
+import { TracksRequestQueryParams } from '@models/zod/track.table.schema';
 import { useQuery } from '@tanstack/react-query';
-import { BaseResourceError, BaseResourceErrorType } from '@models/errors/baseResourceError';
-import { ApplicationError } from '@lib/errors/ApplicationError';
-import { Result } from 'neverthrow';
+import { BaseResourceError } from '@models/errors/baseResourceError';
+import { API_STRATEGY } from '@lib/config/apiConfig';
+import { ApiStrategy } from '@lib/constants/apiStrategy';
+import { trackClient } from '@api/infrastructure/grpc/clients';
+import { fetchTracksGrpc } from '@api/resources/trackGrpc';
 
 export const useTracks = (filters: TracksRequestQueryParams) =>
 	useQuery({
 		queryKey: ['tracks', filters],
 		queryFn: async () => {
-			const result: Result<TrackListResponse, ApplicationError<BaseResourceErrorType>> = await fetchTracks(filters);
+			await trackClient.listTracks(filters);
+			const result = API_STRATEGY === ApiStrategy.REST ? await fetchTracks(filters) : await fetchTracksGrpc(filters);
 
 			if (result.isErr()) {
 				const error = result.error;

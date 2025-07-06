@@ -1,5 +1,5 @@
 'use client';
-import apiClient from '../apiClient';
+import apiClient from '../infrastructure/rest/apiClient';
 import qs from 'qs';
 import { trackSchema } from '@models/zod/track.schema';
 import {
