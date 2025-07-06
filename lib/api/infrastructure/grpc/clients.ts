@@ -3,7 +3,7 @@ import { createGrpcWebTransport } from '@connectrpc/connect-web';
 import { GenreService, TrackService } from '@api/infrastructure/grpc/gen/music_service_connect';
 
 const transport = createGrpcWebTransport({
-	baseUrl: process.env.NEXT_PUBLIC_API_GRPC_URL || 'http://localhost:8080',
+	baseUrl: 'http://localhost:8080',
 });
 
 export const trackClient = createClient(TrackService, transport);
