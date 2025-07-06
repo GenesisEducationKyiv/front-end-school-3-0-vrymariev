@@ -1,7 +1,9 @@
+import React from 'react';
 import TrackForm from '@components/tracksManager/TrackForm';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 
 describe('TrackForm - blackbox integration test', () => {
 	it('shows validation errors on empty submit', async () => {
