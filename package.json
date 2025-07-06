@@ -61,5 +61,10 @@
     "jsdom": "^26.1.0",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-arm64-gnu": "4.44.1",
+    "@rollup/rollup-linux-x64-gnu": "4.44.1",
+    "sass-embedded-linux-x64": "1.89.2"
   }
 }
