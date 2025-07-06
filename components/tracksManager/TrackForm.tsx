@@ -146,7 +146,7 @@ const TrackForm: React.FC<TrackFormProps> = ({ defaultValues, onSubmit }) => {
 							<option value="" disabled>
 								Select a genre
 							</option>
-							{unselectedGenres.map((genre) => (
+							{unselectedGenres.map((genre: string) => (
 								<option key={genre} value={genre}>
 									{genre}
 								</option>

@@ -5,7 +5,7 @@ import { genreClient } from '@api/infrastructure/grpc/clients';
 import { Empty } from '@bufbuild/protobuf';
 import { genresResponseSchema } from '@models/zod/genre.schema';
 
-export const fetchGenresGrpc = async (): Promise<Result<any, ApplicationError>> => {
+export const fetchGenresGrpc = async (): Promise<Result<string[], ApplicationError>> => {
 	try {
 		const response = await genreClient.getAllGenres(Empty);
 

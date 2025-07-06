@@ -11,7 +11,8 @@
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
     "test:e2e": "playwright test",
-    "test:ct": "playwright test --config=playwright-ct.config.ts"
+    "test:ct": "playwright test --config=playwright-ct.config.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@bufbuild/protobuf": "^1.10.0",
