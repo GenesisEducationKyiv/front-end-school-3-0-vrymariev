@@ -25,15 +25,21 @@ const fakeTrackData = {
 	meta: { totalPages: 5 },
 };
 
+vi.mock('@store/trackModalStore', () => {
+	return {
+		useTrackModalStore: () => ({
+			modalState: undefined,
+			isOpen: false,
+			openModal: mockOpenModal,
+			closeModal: vi.fn(),
+		}),
+	};
+});
+
 describe('useTracksListController', () => {
 	beforeEach(() => {
-		vi.resetAllMocks();
 
-		(useTracks as Mock).mockReturnValue({
-			data: fakeTrackData,
-			isLoading: false,
-			error: null,
-		});
+		(getTrackColumns as Mock).mockReturnValue(fakeColumns);
 
 		(useQueryTableFilters as Mock).mockReturnValue({
 			queryFilters: {
@@ -46,7 +52,11 @@ describe('useTracksListController', () => {
 			setPageQuery: mockSetPageQuery,
 		});
 
-		(getTrackColumns as Mock).mockReturnValue(fakeColumns);
+		(useTracks as Mock).mockReturnValue({
+			data: fakeTrackData,
+			isLoading: false,
+			error: null,
+		});
 	});
 
 	it('returns correct data, loading state and columns', () => {
