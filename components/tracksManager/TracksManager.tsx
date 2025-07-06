@@ -1,14 +1,15 @@
 'use client';
 import { TracksList } from '@components/tracksManager/tacksList/TracksList';
-import { useTrackModal } from '@context/TrackModalContext';
 import { Button } from '@ui/Button';
 import { Plus } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import { useTrackModalStore } from '@store/trackModalStore';
 
 const TrackModal = dynamic(() => import('@components/tracksManager/TrackModal'), { ssr: false });
 
+
 export const TracksManager: React.FC = () => {
-	const { openModal } = useTrackModal();
+	const { openModal } = useTrackModalStore();
 
 	return (
 		<div className="max-w-400 mx-auto">
