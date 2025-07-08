@@ -7,7 +7,7 @@ import { Button } from '@ui/Button';
 import Dropzone from 'react-dropzone';
 import { toast } from 'sonner';
 import { tryCatch } from '@lib/utils/neverthrowUtils';
-import { useUploadTrackFile } from '@lib/hooks/mutations/useUploadTrackFile';
+import { useUploadTrackFileMutation } from '@lib/hooks/mutations/useUploadTrackFileMutation';
 import { validateFile } from '@lib/utils/fileUtills';
 
 type DeleteTrackButtonProps = {
@@ -18,7 +18,7 @@ export const AddTackFileButton: React.FC<DeleteTrackButtonProps> = ({ id }) => {
 	const [isDialogOpen, setDialogOpen] = useState(false);
 	const [file, setFile] = useState<File>();
 
-	const { mutateAsync } = useUploadTrackFile({
+	const { mutateAsync } = useUploadTrackFileMutation({
 		id,
 		onSuccess: () => {
 			toast.success('Done!', { id });
