@@ -6,7 +6,7 @@ import { API_STRATEGY } from '@lib/config/apiConfig';
 import { ApiStrategy } from '@lib/constants/apiStrategy';
 import { fetchGenresGrpc } from '@api/resources/genreGrpc';
 
-export const useGenres = () =>
+export const useGenresQuery = () =>
 	useQuery({
 		queryKey: ['genres'],
 		queryFn: async () => {

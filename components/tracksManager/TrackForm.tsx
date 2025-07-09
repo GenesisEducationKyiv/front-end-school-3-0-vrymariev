@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@ui/Input';
 import { Button } from '@ui/Button';
-import { useGenres } from '@lib/hooks/fetchers/useFetchGenres';
+import { useGenresQuery } from '@lib/hooks/queries/useGenresQuery';
 import { TrackFormValues, trackFormValueSchema } from '@models/zod/track.table.schema';
 import { tryCatchSync } from '@lib/utils/neverthrowUtils';
 
@@ -34,7 +34,7 @@ const TrackForm: React.FC<TrackFormProps> = ({ defaultValues, onSubmit }) => {
 		},
 	});
 
-	const { data: availableGenres = [], isLoading, error } = useGenres();
+	const { data: availableGenres = [], isLoading, error } = useGenresQuery();
 
 	const genres = watch('genres');
 	const coverImage = watch('coverImage');

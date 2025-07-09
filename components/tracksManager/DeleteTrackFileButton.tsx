@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Button } from '@ui/Button';
 import { toast } from 'sonner';
 import { tryCatch } from '@lib/utils/neverthrowUtils';
-import { useDeleteTrackFile } from '@lib/hooks/mutations/useDeleteTrackFile';
+import { useDeleteTrackFileMutation } from '@lib/hooks/mutations/useDeleteTrackFileMutation';
 
 type DeleteTrackButtonProps = {
 	id: string;
@@ -14,7 +14,7 @@ type DeleteTrackButtonProps = {
 
 export const DeleteTrackFileButton: React.FC<DeleteTrackButtonProps> = ({ id, fileName }) => {
 	const [isDialogOpen, setDialogOpen] = useState(false);
-	const { mutateAsync } = useDeleteTrackFile({
+	const { mutateAsync } = useDeleteTrackFileMutation({
 		id,
 		onSuccess: () => {
 			toast.success('Success!');

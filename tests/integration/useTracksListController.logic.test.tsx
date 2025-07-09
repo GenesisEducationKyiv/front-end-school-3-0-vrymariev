@@ -4,14 +4,14 @@ import { describe, expect, it, vi, beforeEach, Mock } from 'vitest';
 
 import { useTracksListController } from '@lib/hooks/components/trackList/useTracksListController';
 
-vi.mock('@lib/hooks/fetchers/useFetchTracks');
+vi.mock('@lib/hooks/queries/useTracksQuery');
 vi.mock('@lib/hooks/components/trackList/useQueryTableFilters');
 vi.mock('@context/TrackModalContext');
 vi.mock('@components/tracksManager/tacksList/Columns', () => ({
 	getTrackColumns: vi.fn(),
 }));
 
-import { useTracks } from '@lib/hooks/fetchers/useFetchTracks';
+import { useTracksQuery } from '@lib/hooks/queries/useTracksQuery';
 import { useQueryTableFilters } from '@lib/hooks/components/trackList/useQueryTableFilters';
 import { getTrackColumns } from '@components/tracksManager/tacksList/Columns';
 import type { PaginationState } from '@tanstack/react-table';
@@ -53,7 +53,7 @@ describe('useTracksListController', () => {
 			setPageQuery: mockSetPageQuery,
 		});
 
-		(useTracks as Mock).mockReturnValue({
+		(useTracksQuery as Mock).mockReturnValue({
 			data: fakeTrackData,
 			isLoading: false,
 			error: null,
@@ -106,7 +106,7 @@ describe('useTracksListController', () => {
 			setPageQuery: mockSetPageQuery,
 		});
 
-		(useTracks as Mock).mockReturnValueOnce({
+		(useTracksQuery as Mock).mockReturnValueOnce({
 			data: { data: [], meta: { totalPages: 5 } },
 			isLoading: false,
 			error: null,

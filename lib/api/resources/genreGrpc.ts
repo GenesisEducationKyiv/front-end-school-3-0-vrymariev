@@ -2,8 +2,8 @@ import { err, ok, Result } from 'neverthrow';
 import { ApplicationError } from '@lib/errors/ApplicationError';
 import { BaseResourceError } from '@models/errors/baseResourceError';
 import { genreClient } from '@api/infrastructure/grpc/clients';
-import { Empty } from '@bufbuild/protobuf';
 import { genresResponseSchema } from '@models/zod/genre.schema';
+import { Empty } from '@api/infrastructure/grpc/gen/music_service_pb';
 
 export const fetchGenresGrpc = async (): Promise<Result<string[], ApplicationError>> => {
 	try {

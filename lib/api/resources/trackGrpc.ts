@@ -108,3 +108,20 @@ export const uploadTrackFileGrpc = async (id: string, file: FormData) => {
 		return err(ApplicationError.wrap(error, BaseResourceError.NetworkError));
 	}
 };
+
+export const startActiveTrackStream = (onMessage: (title: string) => void): AbortController => {
+	const abort = new AbortController();
+
+	(async () => {
+		try {
+			const stream = trackClient.activeTrackStream({}, { signal: abort.signal });
+			for await (const message of stream) {
+				onMessage(message.title);
+			}
+		} catch (err) {
+			console.error('Stream error:', err);
+		}
+	})();
+
+	return abort;
+};

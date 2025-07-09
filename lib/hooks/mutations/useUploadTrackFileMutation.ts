@@ -10,7 +10,7 @@ type UploadTrackFileParams = {
 };
 
 
-export function useUploadTrackFile({ id, onSuccess, onError }: UploadTrackFileParams) {
+export function useUploadTrackFileMutation({ id, onSuccess, onError }: UploadTrackFileParams) {
 	const queryClient = useQueryClient();
 
 	return useMutation({

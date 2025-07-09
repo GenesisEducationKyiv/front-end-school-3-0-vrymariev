@@ -16,7 +16,7 @@ type UseTrackMutationParams = {
 	onError?: () => void;
 };
 
-export function useTrackMutation({ id, onSuccess }: UseTrackMutationParams) {
+export function useUpdateCreateTrackMutation({ id, onSuccess }: UseTrackMutationParams) {
 	const queryClient = useQueryClient();
 
 	return useMutation({

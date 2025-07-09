@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { AddTrackRequest, DeleteResponse, DeleteTrackFileRequest, DeleteTrackRequest, DeleteTracksRequest, Empty, GenresResponse, GetTrackBySlugRequest, ListTracksRequest, ListTracksResponse, Track, TrackFileResponse, UpdateTrackRequest, UploadTrackFileRequest } from "./music_service_pb.ts";
+import { ActiveTrackRequest, ActiveTrackResponse, AddTrackRequest, DeleteResponse, DeleteTrackFileRequest, DeleteTrackRequest, DeleteTracksRequest, Empty, GenresResponse, GetTrackBySlugRequest, ListTracksRequest, ListTracksResponse, Track, TrackFileResponse, UpdateTrackRequest, UploadTrackFileRequest } from "./music_service_pb.ts";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -83,6 +83,17 @@ export const TrackService = {
       I: DeleteTrackFileRequest,
       O: DeleteResponse,
       kind: MethodKind.Unary,
+    },
+    /**
+     * Track stream
+     *
+     * @generated from rpc music.TrackService.ActiveTrackStream
+     */
+    activeTrackStream: {
+      name: "ActiveTrackStream",
+      I: ActiveTrackRequest,
+      O: ActiveTrackResponse,
+      kind: MethodKind.ServerStreaming,
     },
   }
 } as const;
