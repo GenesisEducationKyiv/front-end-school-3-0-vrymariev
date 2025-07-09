@@ -1,10 +1,12 @@
 'use client';
 import { TracksList } from '@components/tracksManager/tacksList/TracksList';
-import TrackModal from './TrackModal';
 import { Button } from '@ui/Button';
 import { Plus } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import { useTrackModalStore } from '@store/trackModalStore';
 import ActiveTrack from './ActiveTrack';
+
+const TrackModal = dynamic(() => import('@components/tracksManager/TrackModal'), { ssr: false });
 
 export const TracksManager: React.FC = () => {
 	const { openModal } = useTrackModalStore();
