@@ -1,5 +1,4 @@
 'use client';
-import apiClient from '../apiClient';
 import qs from 'qs';
 import { trackSchema } from '@models/zod/track.schema';
 import {
@@ -10,8 +9,9 @@ import {
 	trackFormValueSchema,
 } from '@models/zod/track.table.schema';
 import { ApplicationError } from '@lib/errors/ApplicationError';
-import { BaseResourceError, BaseResourceErrorType } from '@models/errors/baseResourceError';
+import { BaseResourceError } from '@models/errors/baseResourceError';
 import { err, ok } from 'neverthrow';
+import apiClient from '@api/infrastructure/rest/apiClient';
 
 export const fetchTracks = async (query?: TracksRequestQueryParams) => {
 	try {

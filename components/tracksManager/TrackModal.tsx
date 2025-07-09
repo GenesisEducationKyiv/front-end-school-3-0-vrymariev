@@ -4,14 +4,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@ui/Dialog';
 import TrackForm from '@components/tracksManager/TrackForm';
 import { toast } from 'sonner';
 import { TrackFormValues } from '@models/zod/track.table.schema';
-import { useTrackMutation } from '@lib/hooks/mutations/useTrackMutation';
+import { useUpdateCreateTrackMutation } from '@lib/hooks/mutations/useUpdateCreateTrackMutation';
 import { tryCatch } from '@lib/utils/neverthrowUtils';
 import { useTrackModalStore } from '@store/trackModalStore';
 
 const TrackModal: React.FC = () => {
 	const { isOpen, modalState, closeModal } = useTrackModalStore();
 	
-	const { mutateAsync } = useTrackMutation({
+	const { mutateAsync } = useUpdateCreateTrackMutation({
 		id: modalState?.id,
 		onSuccess: () => {
 			toast.success('Success!');

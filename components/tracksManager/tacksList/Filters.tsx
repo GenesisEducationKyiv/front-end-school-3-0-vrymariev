@@ -1,5 +1,5 @@
 'use client';
-import { useGenres } from '@lib/hooks/fetchers/useFetchGenres';
+import { useGenresQuery } from '@lib/hooks/queries/useGenresQuery';
 import { useDebounce } from '@lib/hooks/useDebounce';
 import { useQueryTableFilters } from '@lib/hooks/components/trackList/useQueryTableFilters';
 import { Button } from '@ui/Button';
@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 const artists = ['Beyoncé', 'Drake', 'Harry Styles', 'Justin Bieber', 'Lady Gaga'];
 
 export function Filters() {
-	const { data: genresList, isLoading, error } = useGenres();
+	const { data: genresList, isLoading, error } = useGenresQuery();
 	const {queryFilters, setMetaQuery} = useQueryTableFilters();
 	const [searchFilter, setSearchFilter] = useState<string>(queryFilters?.search || '');
 	const debouncedSearch = useDebounce(searchFilter, 300);

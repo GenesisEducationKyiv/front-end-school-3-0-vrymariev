@@ -42,6 +42,9 @@
       "@models/*": [
         "./models/*"
       ],
+      "@gen/*": [
+        "./gen/*"
+      ],
       "@store/*": [
         "./store/*"
       ]

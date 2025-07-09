@@ -1,4 +1,7 @@
-import { deleteTrackFile } from '@api/resources/Tracks';
+import { deleteTrackFileGrpc } from '@api/resources/trackGrpc';
+import { deleteTrackFile } from '@api/resources/trackRest';
+import { API_STRATEGY } from '@lib/config/apiConfig';
+import { ApiStrategy } from '@lib/constants/apiStrategy';
 import { tryCatch } from '@lib/utils/neverthrowUtils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -8,12 +11,13 @@ type DeleteTrackFileParams = {
 	onError?: (error: Error) => void;
 };
 
-export function useDeleteTrackFile({ id, onSuccess, onError }: DeleteTrackFileParams) {
+export function useDeleteTrackFileMutation({ id, onSuccess, onError }: DeleteTrackFileParams) {
 	const queryClient = useQueryClient();
 
 	return useMutation({
 		mutationFn: async () => {
-			const result = await deleteTrackFile(id);
+			const result = API_STRATEGY === ApiStrategy.REST ? await deleteTrackFile(id) : await deleteTrackFileGrpc(id);
+
 			if (result.isErr()) throw result.error;
 			return result.value;
 		},

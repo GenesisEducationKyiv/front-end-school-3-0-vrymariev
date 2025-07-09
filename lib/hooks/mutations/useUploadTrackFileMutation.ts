@@ -1,4 +1,4 @@
-import { uploadTrackFile } from '@api/resources/Tracks';
+import { uploadTrackFile } from '@api/resources/trackRest';
 import { tryCatch } from '@lib/utils/neverthrowUtils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -10,7 +10,7 @@ type UploadTrackFileParams = {
 };
 
 
-export function useUploadTrackFile({ id, onSuccess, onError }: UploadTrackFileParams) {
+export function useUploadTrackFileMutation({ id, onSuccess, onError }: UploadTrackFileParams) {
 	const queryClient = useQueryClient();
 
 	return useMutation({
