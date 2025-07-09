@@ -8,7 +8,6 @@ import ActiveTrack from './ActiveTrack';
 
 const TrackModal = dynamic(() => import('@components/tracksManager/TrackModal'), { ssr: false });
 
-
 export const TracksManager: React.FC = () => {
 	const { openModal } = useTrackModalStore();
 
