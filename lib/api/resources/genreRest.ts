@@ -1,4 +1,4 @@
-import apiClient from '@api/apiClient';
+import apiClient from '@api/infrastructure/rest/apiClient';
 import { genresResponseSchema } from '@models/zod/genre.schema';
 import { ApplicationError } from '@lib/errors/ApplicationError';
 import { BaseResourceError, BaseResourceErrorType } from '@models/errors/baseResourceError';

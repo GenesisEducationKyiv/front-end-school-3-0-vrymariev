@@ -1,15 +1,16 @@
 'use client';
-import { fetchGenres } from '@api/resources/Genres';
+import { fetchGenres } from '@api/resources/genreRest';
 import { useQuery } from '@tanstack/react-query';
-import { BaseResourceError, BaseResourceErrorType } from '@models/errors/baseResourceError';
-import { ApplicationError } from '@lib/errors/ApplicationError';
-import { Result } from 'neverthrow';
+import { BaseResourceError } from '@models/errors/baseResourceError';
+import { API_STRATEGY } from '@lib/config/apiConfig';
+import { ApiStrategy } from '@lib/constants/apiStrategy';
+import { fetchGenresGrpc } from '@api/resources/genreGrpc';
 
-export const useGenres = () =>
+export const useGenresQuery = () =>
 	useQuery({
 		queryKey: ['genres'],
 		queryFn: async () => {
-			const result: Result<string[], ApplicationError<BaseResourceErrorType>> = await fetchGenres();
+			const result = API_STRATEGY === ApiStrategy.REST ? await fetchGenres() : await fetchGenresGrpc();
 
 			if (result.isErr()) {
 				const error = result.error;

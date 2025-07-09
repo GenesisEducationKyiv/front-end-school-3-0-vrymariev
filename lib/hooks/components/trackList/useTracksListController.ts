@@ -1,7 +1,7 @@
 'use client';
 import { PaginationState } from '@tanstack/react-table';
 import { useEffect, useMemo } from 'react';
-import { useTracks } from '@lib/hooks/fetchers/useFetchTracks';
+import { useTracksQuery } from '@lib/hooks/queries/useTracksQuery';
 import { useQueryTableFilters } from '@lib/hooks/components/trackList/useQueryTableFilters';
 import { TracksTableSorting } from '@models/zod/track.table.schema';
 import { DataTableSorting } from '@components/tracksManager/tacksList/DataTable';
@@ -13,7 +13,7 @@ export const useTracksListController = () => {
 
 	const { openModal } = useTrackModalStore();
 
-	const { data, isLoading, error } = useTracks(queryFilters);
+	const { data, isLoading, error } = useTracksQuery(queryFilters);
 	const trackTableColumns = useMemo(() => getTrackColumns(openModal), [openModal]);
 
 	useEffect(() => {
