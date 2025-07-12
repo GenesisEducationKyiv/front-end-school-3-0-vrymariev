@@ -20,6 +20,8 @@ export default defineConfig({
 			'@components': path.resolve(__dirname, 'components'),
 			'@context': path.resolve(__dirname, 'context'),
 			'@models': path.resolve(__dirname, 'models'),
+			'@gen': path.resolve(__dirname, 'gen'),
+			'@store': path.resolve(__dirname, 'store'),
 		},
 	},
 });

@@ -1,9 +1,10 @@
+import React from 'react';
 import { renderHook, act } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach, Mock } from 'vitest';
 
 import { useTracksListController } from '@lib/hooks/components/trackList/useTracksListController';
 
-vi.mock('@lib/hooks/fetchers/useFetchTracks');
+vi.mock('@lib/hooks/queries/useTracksQuery');
 vi.mock('@lib/hooks/components/trackList/useQueryTableFilters');
 vi.mock('@context/TrackModalContext');
 vi.mock('@components/tracksManager/tacksList/Columns', () => ({
@@ -25,15 +26,21 @@ const fakeTrackData = {
 	meta: { totalPages: 5 },
 };
 
+vi.mock('@store/trackModalStore', () => {
+	return {
+		useTrackModalStore: () => ({
+			modalState: undefined,
+			isOpen: false,
+			openModal: mockOpenModal,
+			closeModal: vi.fn(),
+		}),
+	};
+});
+
 describe('useTracksListController', () => {
 	beforeEach(() => {
-		vi.resetAllMocks();
 
-		(useTracksQuery as Mock).mockReturnValue({
-			data: fakeTrackData,
-			isLoading: false,
-			error: null,
-		});
+		(getTrackColumns as Mock).mockReturnValue(fakeColumns);
 
 		(useQueryTableFilters as Mock).mockReturnValue({
 			queryFilters: {
@@ -46,7 +53,11 @@ describe('useTracksListController', () => {
 			setPageQuery: mockSetPageQuery,
 		});
 
-		(getTrackColumns as Mock).mockReturnValue(fakeColumns);
+		(useTracksQuery as Mock).mockReturnValue({
+			data: fakeTrackData,
+			isLoading: false,
+			error: null,
+		});
 	});
 
 	it('returns correct data, loading state and columns', () => {

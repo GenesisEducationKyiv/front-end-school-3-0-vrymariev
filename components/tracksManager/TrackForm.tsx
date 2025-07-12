@@ -1,4 +1,5 @@
 'use client';
+import React from 'react';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -146,7 +147,7 @@ const TrackForm: React.FC<TrackFormProps> = ({ defaultValues, onSubmit }) => {
 							<option value="" disabled>
 								Select a genre
 							</option>
-							{unselectedGenres.map((genre) => (
+							{unselectedGenres.map((genre: string) => (
 								<option key={genre} value={genre}>
 									{genre}
 								</option>
