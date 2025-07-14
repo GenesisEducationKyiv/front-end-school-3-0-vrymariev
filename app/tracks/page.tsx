@@ -1,4 +1,3 @@
-'use client';
 import { TracksManager } from '@components/tracksManager/TracksManager';
 import { Suspense } from 'react';
 

@@ -1,11 +1,12 @@
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import { Button } from "@ui/Button";
-import { ArrowUpDown } from "lucide-react";
-import { AddTackFileButton } from "../AddTackFileButton";
-import { DeleteTrackFileButton } from "../DeleteTrackFileButton";
-import moment from "moment";
-import { DeleteTrackButton } from "../DeleteTrackButton";
-import { Track } from "@models/zod/track.schema";
+import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import { Button } from '@ui/Button';
+import { ArrowUpDown } from 'lucide-react';
+import { AddTackFileButton } from '../AddTackFileButton';
+import { DeleteTrackFileButton } from '../DeleteTrackFileButton';
+import { DeleteTrackButton } from '../DeleteTrackButton';
+import { Track } from '@models/zod/track.schema';
+import { format } from 'date-fns';
+import Image from 'next/image';
 
 export function getTrackColumns(openModal: (track: Track) => void): ColumnDef<Track, any>[] {
 	const columnHelper = createColumnHelper<Track>();
@@ -15,14 +16,16 @@ export function getTrackColumns(openModal: (track: Track) => void): ColumnDef<Tr
 			header: 'Image',
 			cell: ({ getValue }) => {
 				const track = getValue();
-				const id = track.id;
 
-				const coverImage = track.coverImage;
+				const coverImage = track.coverImage ? String(track.coverImage).trim() : '/placeholder.png';
 				return (
-					<img
-						src={!!coverImage ? coverImage : '/placeholder.png'}
+					<Image
+						src={coverImage}
 						alt="Cover preview"
-						className="h-15 w-15 object-cover rounded border"
+						width={60}
+						height={60}
+						className="object-cover rounded border"
+						style={{ height: '60px', width: '60px' }}
 					/>
 				);
 			},
@@ -144,7 +147,7 @@ export function getTrackColumns(openModal: (track: Track) => void): ColumnDef<Tr
 			},
 			cell: ({ getValue }) => {
 				const track = getValue();
-				return moment(track.createdAt).format('DD.MM.YYYY');
+				return format(new Date(track.createdAt), 'dd.MM.yyyy');
 			},
 		}),
 		columnHelper.accessor((row) => row, {

@@ -10,6 +10,8 @@ import {
 	trackFormValueSchema,
 } from '@models/zod/track.table.schema';
 import { trackSchema } from '@models/zod/track.schema';
+import { API_STRATEGY } from '@lib/config/apiConfig';
+import { ApiStrategy } from '@lib/constants/apiStrategy';
 
 export const fetchTracksGrpc = async (query?: TracksRequestQueryParams): Promise<Result<any, ApplicationError>> => {
 	try {
@@ -111,17 +113,20 @@ export const uploadTrackFileGrpc = async (id: string, file: FormData) => {
 
 export const startActiveTrackStream = (onMessage: (title: string) => void): AbortController => {
 	const abort = new AbortController();
-
-	(async () => {
-		try {
-			const stream = trackClient.activeTrackStream({}, { signal: abort.signal });
-			for await (const message of stream) {
-				onMessage(message.title);
+	if (API_STRATEGY === ApiStrategy.REST) {
+		console.warn('gRPC server is not available');
+	} else {
+		(async () => {
+			try {
+				const stream = trackClient.activeTrackStream({}, { signal: abort.signal });
+				for await (const message of stream) {
+					onMessage(message.title);
+				}
+			} catch (err) {
+				console.error('Stream error:', err);
 			}
-		} catch (err) {
-			console.error('Stream error:', err);
-		}
-	})();
+		})();
+	}
 
 	return abort;
 };

@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { trackClient } from '@api/infrastructure/grpc/clients';
 import { startActiveTrackStream } from '@api/resources/trackGrpc';
 
 const ActiveTrack: React.FC = () => {
