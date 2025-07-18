@@ -1,0 +1,21 @@
+{
+	"parser": "typescript",
+	"bracketSpacing": true,
+	"useTabs": true,
+	"printWidth": 120,
+	"trailingComma": "all",
+	"endOfLine": "auto",
+	"singleQuote": true,
+	"tabWidth": 2,
+	"overrides": [
+		{
+			"files": ["*.json", "*.jsonc", "*.json5"],
+			"options": {
+				"parser": "json5",
+				"quoteProps": "preserve",
+				"singleQuote": false,
+				"trailingComma": "none"
+			}
+		}
+	]
+}
