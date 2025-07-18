@@ -14,7 +14,7 @@ export function TracksList() {
 	const { data, isLoading, error, trackTableColumns, tableSorting, tablePagination, onSortingChanged, onPageChange } =
 		useTracksListController();
 	const hasData = data && data.data.length > 0;
-	// console.log('Are we running on server? TracksList? : ', typeof window === 'undefined');
+	
 	return (
 		<div className="flex flex-row gap-10">
 			<Filters />
