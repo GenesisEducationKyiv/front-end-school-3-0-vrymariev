@@ -8,6 +8,7 @@ import { Button } from '@ui/Button';
 import { useGenresQuery } from '@lib/hooks/queries/useGenresQuery';
 import { TrackFormValues, trackFormValueSchema } from '@models/zod/track.table.schema';
 import { tryCatchSync } from '@lib/utils/neverthrowUtils';
+import Image from 'next/image';
 
 interface TrackFormProps {
 	defaultValues?: Partial<TrackFormValues>;
@@ -103,10 +104,13 @@ const TrackForm: React.FC<TrackFormProps> = ({ defaultValues, onSubmit }) => {
 				{errors.coverImage && <p className="text-sm text-red-500">{errors.coverImage.message}</p>}
 				<div>
 					<p className="text-sm text-muted-foreground mb-1">Preview</p>
-					<img
-						src={isValidUrl(coverImage) ? coverImage : '/placeholder.png'}
+					<Image
+						src={isValidUrl(coverImage) ? String(coverImage).trim() : '/placeholder.png'}
 						alt="Cover preview"
-						className="h-40 w-40 object-cover rounded border"
+						width={40}
+						height={40}
+						className="object-cover rounded border"
+						style={{ height: '40px', width: '40px' }}
 					/>
 				</div>
 			</div>
