@@ -3,7 +3,6 @@ import { CreateNewTrackButton } from '@components/tracksManager/CreateNewTrackBu
 import { TrackListWrapper } from './tacksList/TrackListWrapper';
 import { TrackModalWrapper } from './TrackModalWrapper';
 
-
 export const TracksManager: React.FC = () => {
 	return (
 		<div className="max-w-400 mx-auto">

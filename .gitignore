@@ -44,3 +44,5 @@ next-env.d.ts
 
 # build artifact
 analyze/
+*storybook.log
+storybook-static
